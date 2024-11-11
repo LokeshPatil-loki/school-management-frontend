@@ -1,3 +1,4 @@
+import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -99,16 +100,17 @@ const TeachersListPage = () => {
         <div className="flex flex-col justify-center md:flex-row md:justify-start     gap-4 w-full md:w-auto">
           <TableSearch />
           <div className="flex items-center justify-end gap-4">
-            <button className="bg-yellow p-3 rounded-full">
-              <Image src={"/filter.png"} alt="" width={14} height={14} />
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
+              <Image src="/filter.png" alt="" width={14} height={14} />
             </button>
-            <button className="bg-yellow p-3 rounded-full">
-              <Image src={"/sort.png"} alt="sort" width={14} height={14} />
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
+              <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
             {role === UserRole.admin && (
-              <button className="bg-yellow p-3 rounded-full">
-                <Image src={"/plus.png"} alt="add" width={14} height={14} />
-              </button>
+              // <button className="bg-yellow p-3 rounded-full">
+              //   <Image src={"/plus.png"} alt="add" width={14} height={14} />
+              // </button>
+              <FormModal type="create" table="teacher" />
             )}
           </div>
         </div>
