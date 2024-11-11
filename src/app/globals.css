@@ -82,6 +82,7 @@
   padding: 10px !important;
   margin: 10px !important;
   width: 99% !important;
+  height: auto !important;
 }
 .rbc-event:first-child {
   background-color: #e2f8ff !important;
