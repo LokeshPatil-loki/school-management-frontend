@@ -1,3 +1,4 @@
+import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -48,9 +49,7 @@ const SubjectListPage = () => {
               </button>
             </Link>
             {role === UserRole.admin && (
-              <button className="w-7 h-7 flex items-center justify-center rounded-full bg-purple">
-                <Image src={"/delete.png"} alt="" width={16} height={16} />
-              </button>
+              <FormModal type="delete" table="subject" id={item.id} />
             )}
           </div>
         </td>
@@ -72,9 +71,7 @@ const SubjectListPage = () => {
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
             {role === UserRole.admin && (
-              <button className="bg-yellow p-3 rounded-full">
-                <Image src={"/plus.png"} alt="add" width={14} height={14} />
-              </button>
+              <FormModal type="create" table="subject" />
             )}
           </div>
         </div>
