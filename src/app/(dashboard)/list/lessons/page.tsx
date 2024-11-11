@@ -73,7 +73,7 @@ const LessonsListPage = () => {
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
       {/* TOP */}
       <div className="flex justify-between items-center">
-        <h1 className="hidden md:block font-semibold text-lg">All Classes</h1>
+        <h1 className="hidden md:block font-semibold text-lg">All Lessons</h1>
         <div className="flex flex-col justify-center md:flex-row md:justify-start     gap-4 w-full md:w-auto">
           <TableSearch />
           <div className="flex items-center justify-end gap-4">
