@@ -105,9 +105,11 @@ const TeachersListPage = () => {
             <button className="bg-yellow p-3 rounded-full">
               <Image src={"/sort.png"} alt="sort" width={14} height={14} />
             </button>
-            <button className="bg-yellow p-3 rounded-full">
-              <Image src={"/plus.png"} alt="add" width={14} height={14} />
-            </button>
+            {role === UserRole.admin && (
+              <button className="bg-yellow p-3 rounded-full">
+                <Image src={"/plus.png"} alt="add" width={14} height={14} />
+              </button>
+            )}
           </div>
         </div>
       </div>
