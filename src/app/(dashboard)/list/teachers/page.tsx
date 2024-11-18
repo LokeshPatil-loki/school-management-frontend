@@ -7,11 +7,12 @@ import { role, teachersData } from "@/lib/data";
 import { useGetTeachersQuery } from "@/lib/redux/api/teachersApiSlice";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { Teacher } from "@/lib/types/Teacher";
-import { UserRole } from "@/lib/types/UserRole";
+import { UserRole } from "@/lib/types/Enums";
 import Image from "next/image";
 import Link from "next/link";
 import { it } from "node:test";
 import React from "react";
+import { useSearchParams } from "next/navigation";
 
 const columns = [
   {
@@ -58,7 +59,7 @@ const renderRow = (item: Teacher) => {
       <td className="flex flex-row items-center gap-4 p-4">
         <Image
           alt=""
-          src={item.photo}
+          src={item.img || ""}
           width={40}
           height={40}
           className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
@@ -68,11 +69,13 @@ const renderRow = (item: Teacher) => {
           <p className="text-xs text-gray-500">{item?.email}</p>
         </div>
       </td>
-      <td className="hidden md:table-cell text-sm">{item.teacherId}</td>
+      <td className="hidden md:table-cell text-sm">{item.id}</td>
       <td className="hidden md:table-cell text-sm">
-        {item.subjects.join(",")}
+        {item.subjects.map((subject) => subject.name).join(",")}
       </td>
-      <td className="hidden md:table-cell text-sm">{item.classes.join(",")}</td>
+      <td className="hidden md:table-cell text-sm">
+        {item.classes.map((item) => item.name).join(",")}
+      </td>
       <td className="hidden md:table-cell text-sm">{item.phone}</td>
       <td className="hidden md:table-cell text-sm">{item.address}</td>
       <td className="">
@@ -95,8 +98,10 @@ const renderRow = (item: Teacher) => {
 };
 
 const TeachersListPage = () => {
-  const teachers = useGetTeachersQuery({});
-  console.log(teachers.data);
+  const searchParams = useSearchParams();
+  const { isLoading, data } = useGetTeachersQuery({
+    page: searchParams.get("page") || "1",
+  });
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
       {/* TOP */}
@@ -121,7 +126,9 @@ const TeachersListPage = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={teachersData} />
+      {!isLoading && (
+        <Table columns={columns} renderRow={renderRow} data={data} />
+      )}
       {/* PAGINATION */}
       <Pagination />
     </div>

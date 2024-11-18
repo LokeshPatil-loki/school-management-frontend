@@ -1,3 +1,4 @@
+import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const teachersApiSlice = createApi({
@@ -7,8 +8,11 @@ export const teachersApiSlice = createApi({
   }),
   endpoints: (builder) => {
     return {
-      getTeachers: builder.query({
-        query: () => "/teachers",
+      getTeachers: builder.query<any, { page: string; limit?: number }>({
+        query: ({ page, limit = ITEMS_PER_PAGE }) => ({
+          url: "/teachers",
+          params: { page },
+        }),
       }),
     };
   },
