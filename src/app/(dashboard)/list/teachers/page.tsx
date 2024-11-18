@@ -49,6 +49,52 @@ const columns = [
   },
 ];
 
+const TeachersListPage = () => {
+  const searchParams = useSearchParams();
+  const { isLoading, data } = useGetTeachersQuery({
+    page: searchParams.get("page") || "1",
+    limit: searchParams.get("limit"),
+    classId: searchParams.get("classId"),
+    search: searchParams.get("search"),
+  });
+  // console.log(data.meta);
+  return (
+    <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
+      {/* TOP */}
+      <div className="flex justify-between items-center">
+        <h1 className="hidden md:block font-semibold text-lg">All Teachers</h1>
+        <div className="flex flex-col justify-center md:flex-row md:justify-start     gap-4 w-full md:w-auto">
+          <TableSearch />
+          <div className="flex items-center justify-end gap-4">
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
+              <Image src="/filter.png" alt="" width={14} height={14} />
+            </button>
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
+              <Image src="/sort.png" alt="" width={14} height={14} />
+            </button>
+            {role === UserRole.admin && (
+              // <button className="bg-yellow p-3 rounded-full">
+              //   <Image src={"/plus.png"} alt="add" width={14} height={14} />
+              // </button>
+              <FormModal type="create" table="teacher" />
+            )}
+          </div>
+        </div>
+      </div>
+      {/* LIST */}
+      {!isLoading && (
+        <>
+          <Table columns={columns} renderRow={renderRow} data={data.data} />
+          <Pagination
+            currentPage={data?.meta?.currentPage}
+            totalPages={data?.meta?.totalPages}
+          />
+        </>
+      )}
+    </div>
+  );
+};
+
 const renderRow = (item: Teacher) => {
   return (
     <tr
@@ -93,51 +139,6 @@ const renderRow = (item: Teacher) => {
         </div>
       </td>
     </tr>
-  );
-};
-
-const TeachersListPage = () => {
-  const searchParams = useSearchParams();
-  const { isLoading, data } = useGetTeachersQuery({
-    page: searchParams.get("page") || "1",
-    limit: searchParams.get("limit"),
-    classId: searchParams.get("classId"),
-  });
-  // console.log(data.meta);
-  return (
-    <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
-      {/* TOP */}
-      <div className="flex justify-between items-center">
-        <h1 className="hidden md:block font-semibold text-lg">All Teachers</h1>
-        <div className="flex flex-col justify-center md:flex-row md:justify-start     gap-4 w-full md:w-auto">
-          <TableSearch />
-          <div className="flex items-center justify-end gap-4">
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
-              <Image src="/filter.png" alt="" width={14} height={14} />
-            </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
-              <Image src="/sort.png" alt="" width={14} height={14} />
-            </button>
-            {role === UserRole.admin && (
-              // <button className="bg-yellow p-3 rounded-full">
-              //   <Image src={"/plus.png"} alt="add" width={14} height={14} />
-              // </button>
-              <FormModal type="create" table="teacher" />
-            )}
-          </div>
-        </div>
-      </div>
-      {/* LIST */}
-      {!isLoading && (
-        <>
-          <Table columns={columns} renderRow={renderRow} data={data.data} />
-          <Pagination
-            currentPage={data?.meta?.currentPage}
-            totalPages={data?.meta?.totalPages}
-          />
-        </>
-      )}
-    </div>
   );
 };
 

@@ -11,11 +11,16 @@ export const teachersApiSlice = createApi({
     return {
       getTeachers: builder.query<
         any,
-        { page: string; limit?: string | null; classId?: string | null }
+        {
+          page: string;
+          limit?: string | null;
+          classId?: string | null;
+          search?: string | null;
+        }
       >({
-        query: ({ page, limit = ITEMS_PER_PAGE, classId }) => ({
+        query: ({ page, limit = ITEMS_PER_PAGE, classId, search }) => ({
           url: "/teachers",
-          params: removeEmptyProperties({ page, limit, classId }),
+          params: removeEmptyProperties({ page, limit, classId, search }),
         }),
       }),
     };
