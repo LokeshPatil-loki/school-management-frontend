@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const teachersApiSlice = createApi({
   reducerPath: "teachers",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:4000/api",
+    baseUrl: "http://localhost:4000/api/teachers",
   }),
   endpoints: (builder) => {
     return {
@@ -19,7 +19,7 @@ export const teachersApiSlice = createApi({
         }
       >({
         query: ({ page, limit = ITEMS_PER_PAGE, classId, search }) => ({
-          url: "/teachers",
+          url: "/",
           params: removeEmptyProperties({ page, limit, classId, search }),
         }),
       }),

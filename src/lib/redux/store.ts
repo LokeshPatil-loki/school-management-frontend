@@ -1,13 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { teachersApiSlice } from "./api/teachersApiSlice";
+import { studentsApiSlice } from "./api/studentsApiSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       [teachersApiSlice.reducerPath]: teachersApiSlice.reducer,
+      [studentsApiSlice.reducerPath]: studentsApiSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => {
-      return getDefaultMiddleware().concat(teachersApiSlice.middleware);
+      return getDefaultMiddleware()
+        .concat(teachersApiSlice.middleware)
+        .concat(studentsApiSlice.middleware);
     },
   });
 };
