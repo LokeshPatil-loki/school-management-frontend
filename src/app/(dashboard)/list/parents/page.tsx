@@ -4,7 +4,7 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { parentsData, role } from "@/lib/data";
 import { Parent } from "@/lib/types/Parent";
-import { UserRole } from "@/lib/types/UserRole";
+import { UserRole } from "@/lib/types/Enums";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";

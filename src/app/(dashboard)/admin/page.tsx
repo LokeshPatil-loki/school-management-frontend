@@ -4,7 +4,7 @@ import CountChart from "@/components/CountChart";
 import EventCalendar from "@/components/EventCalendar";
 import FinanceCharts from "@/components/FinanceCharts";
 import UserCard from "@/components/UserCard";
-import { UserRole } from "@/lib/types/UserRole";
+import { UserRole } from "@/lib/types/Enums";
 import React from "react";
 
 const AdminPage = () => {

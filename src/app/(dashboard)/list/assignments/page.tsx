@@ -18,7 +18,7 @@ import { Lesson } from "@/lib/types/Lesson";
 import { Parent } from "@/lib/types/Parent";
 import { Student } from "@/lib/types/Student";
 import { Teacher } from "@/lib/types/Teacher";
-import { UserRole } from "@/lib/types/UserRole";
+import { UserRole } from "@/lib/types/Enums";
 import Image from "next/image";
 import Link from "next/link";
 import { it } from "node:test";
