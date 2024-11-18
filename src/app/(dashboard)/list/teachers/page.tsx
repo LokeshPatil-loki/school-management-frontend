@@ -102,6 +102,7 @@ const TeachersListPage = () => {
   const { isLoading, data } = useGetTeachersQuery({
     page: searchParams.get("page") || "1",
   });
+  // console.log(data.meta);
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
       {/* TOP */}
@@ -127,10 +128,14 @@ const TeachersListPage = () => {
       </div>
       {/* LIST */}
       {!isLoading && (
-        <Table columns={columns} renderRow={renderRow} data={data} />
+        <>
+          <Table columns={columns} renderRow={renderRow} data={data.data} />
+          <Pagination
+            currentPage={data?.meta?.currentPage}
+            totalPages={data?.meta?.totalPages}
+          />
+        </>
       )}
-      {/* PAGINATION */}
-      <Pagination />
     </div>
   );
 };

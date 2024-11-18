@@ -1,22 +1,50 @@
+"use client";
+import { useRouter } from "next/navigation";
 import React from "react";
 
-const Pagination = () => {
+export type PaginationProps = {
+  currentPage: number;
+  totalPages: number;
+};
+
+const Pagination = ({ currentPage, totalPages }: PaginationProps) => {
+  const router = useRouter();
+
+  const changePage = (newPage: number) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("page", newPage.toString());
+    router.push(`${window.location.pathname}?${params}`);
+  };
   return (
     <div className="p-4 flex justify-between text-gray-500">
       <button
-        disabled
+        onClick={() => changePage(currentPage - 1)}
+        disabled={currentPage === 1}
         className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         Prev
       </button>
       <div className="flex items-center gap-2 text-sm">
-        <button className="px-2 rounded-sm bg-sky">1</button>
-        <button className="px-2 rounded-sm ">2</button>
-        <button className="px-2 rounded-sm ">3</button>
-        ...
-        <button className="px-2 rounded-sm ">10</button>
+        {Array.from({ length: totalPages }, (_, index) => {
+          const pageIndex = index + 1;
+          return (
+            <button
+              key={pageIndex}
+              className={`px-2 rounded-sm ${
+                currentPage === pageIndex && "bg-sky"
+              }`}
+              onClick={() => changePage(pageIndex)}
+            >
+              {pageIndex}
+            </button>
+          );
+        })}
       </div>
-      <button className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+      <button
+        onClick={() => changePage(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+      >
         Next
       </button>
     </div>
