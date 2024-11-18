@@ -10,7 +10,6 @@ import { Teacher } from "@/lib/types/Teacher";
 import { UserRole } from "@/lib/types/Enums";
 import Image from "next/image";
 import Link from "next/link";
-import { it } from "node:test";
 import React from "react";
 import { useSearchParams } from "next/navigation";
 
