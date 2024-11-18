@@ -1,9 +1,33 @@
 import Announcements from "@/components/Announcements";
 import BigCalender from "@/components/BigCalender";
 import PerformanceChart from "@/components/PerformanceChart";
+import Shortcuts, { Shortcut } from "@/components/Shortcuts";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+
+const shortcutsData: Shortcut[] = [
+  {
+    title: "Lessons",
+    href: "/",
+  },
+  {
+    title: "Teachers",
+    href: `/list/teachers/?classId=${2}`,
+  },
+  {
+    title: "Results",
+    href: "/",
+  },
+  {
+    title: "Assignments",
+    href: "/",
+  },
+  {
+    title: "Exams",
+    href: "/",
+  },
+];
 
 const SingleStudentPage = () => {
   return (
@@ -69,26 +93,7 @@ const SingleStudentPage = () => {
       </div>
       {/* RIGHT */}
       <div className=" w-full xl:w-1/3 flex flex-col gap-4">
-        <div className="bg-white p-4 rounded-md">
-          <h1 className="text-xl font-semibold">Shortcuts</h1>
-          <div className="mt-4 flex gap-4 flex-wrap text-xs text-gray-500">
-            <Link className="p-3 rounded-md bg-purpleLight" href={"/"}>
-              Student&apos;s Lessons
-            </Link>
-            <Link className="p-3 rounded-md bg-skyLight" href={"/"}>
-              Student&apos;s Teachers
-            </Link>
-            <Link className="p-3 rounded-md bg-yellowLight" href={"/"}>
-              Student&apos;s Results
-            </Link>
-            <Link className="p-3 rounded-md bg-skyLight" href={"/"}>
-              Student&apos;s Assignments
-            </Link>
-            <Link className="p-3 rounded-md bg-pink-50" href={"/"}>
-              Student&apos;s Exams
-            </Link>
-          </div>
-        </div>
+        <Shortcuts type="Student" data={shortcutsData} />
         <PerformanceChart />
         <Announcements />
       </div>
