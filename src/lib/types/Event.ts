@@ -1,10 +1,11 @@
 import { Class } from "./Class";
 
-export interface Announcement {
+export interface Event {
   id: number;
   title: string;
   description: string;
-  date: Date;
+  startTime: Date;
+  endTime: Date;
   classId?: number | null;
   class?: Class | null;
 }
