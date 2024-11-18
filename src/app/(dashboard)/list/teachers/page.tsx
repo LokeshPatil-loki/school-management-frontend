@@ -1,8 +1,11 @@
+"use client";
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { role, teachersData } from "@/lib/data";
+import { useGetTeachersQuery } from "@/lib/redux/api/teachersApiSlice";
+import { useAppSelector } from "@/lib/redux/hooks";
 import { Teacher } from "@/lib/types/Teacher";
 import { UserRole } from "@/lib/types/UserRole";
 import Image from "next/image";
@@ -46,53 +49,54 @@ const columns = [
   },
 ];
 
+const renderRow = (item: Teacher) => {
+  return (
+    <tr
+      key={item.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight"
+    >
+      <td className="flex flex-row items-center gap-4 p-4">
+        <Image
+          alt=""
+          src={item.photo}
+          width={40}
+          height={40}
+          className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
+        />
+        <div className="flex flex-col">
+          <h3 className="font-semibold">{item.name}</h3>
+          <p className="text-xs text-gray-500">{item?.email}</p>
+        </div>
+      </td>
+      <td className="hidden md:table-cell text-sm">{item.teacherId}</td>
+      <td className="hidden md:table-cell text-sm">
+        {item.subjects.join(",")}
+      </td>
+      <td className="hidden md:table-cell text-sm">{item.classes.join(",")}</td>
+      <td className="hidden md:table-cell text-sm">{item.phone}</td>
+      <td className="hidden md:table-cell text-sm">{item.address}</td>
+      <td className="">
+        <div className="flex items-center gap-2">
+          <Link href={`/list/teachers/${item.id}`}>
+            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-sky">
+              <Image src={"/view.png"} alt="" width={16} height={16} />
+            </button>
+          </Link>
+          {role === UserRole.admin && (
+            // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-purple">
+            //   <Image src={"/delete.png"} alt="" width={16} height={16} />
+            // </button>
+            <FormModal type="delete" table="teacher" id={item.id} />
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+};
+
 const TeachersListPage = () => {
-  const renderRow = (item: Teacher) => {
-    return (
-      <tr
-        key={item.id}
-        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight"
-      >
-        <td className="flex flex-row items-center gap-4 p-4">
-          <Image
-            alt=""
-            src={item.photo}
-            width={40}
-            height={40}
-            className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
-          />
-          <div className="flex flex-col">
-            <h3 className="font-semibold">{item.name}</h3>
-            <p className="text-xs text-gray-500">{item?.email}</p>
-          </div>
-        </td>
-        <td className="hidden md:table-cell text-sm">{item.teacherId}</td>
-        <td className="hidden md:table-cell text-sm">
-          {item.subjects.join(",")}
-        </td>
-        <td className="hidden md:table-cell text-sm">
-          {item.classes.join(",")}
-        </td>
-        <td className="hidden md:table-cell text-sm">{item.phone}</td>
-        <td className="hidden md:table-cell text-sm">{item.address}</td>
-        <td className="">
-          <div className="flex items-center gap-2">
-            <Link href={`/list/teachers/${item.id}`}>
-              <button className="w-7 h-7 flex items-center justify-center rounded-full bg-sky">
-                <Image src={"/view.png"} alt="" width={16} height={16} />
-              </button>
-            </Link>
-            {role === UserRole.admin && (
-              // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-purple">
-              //   <Image src={"/delete.png"} alt="" width={16} height={16} />
-              // </button>
-              <FormModal type="delete" table="teacher" id={item.id} />
-            )}
-          </div>
-        </td>
-      </tr>
-    );
-  };
+  const teachers = useGetTeachersQuery({});
+  console.log(teachers.data);
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
       {/* TOP */}
