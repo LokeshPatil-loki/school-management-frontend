@@ -100,6 +100,8 @@ const TeachersListPage = () => {
   const searchParams = useSearchParams();
   const { isLoading, data } = useGetTeachersQuery({
     page: searchParams.get("page") || "1",
+    limit: searchParams.get("limit"),
+    classId: searchParams.get("classId"),
   });
   // console.log(data.meta);
   return (

@@ -1,4 +1,5 @@
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { removeEmptyProperties } from "@/lib/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const teachersApiSlice = createApi({
@@ -8,10 +9,13 @@ export const teachersApiSlice = createApi({
   }),
   endpoints: (builder) => {
     return {
-      getTeachers: builder.query<any, { page: string; limit?: number }>({
-        query: ({ page, limit = ITEMS_PER_PAGE }) => ({
+      getTeachers: builder.query<
+        any,
+        { page: string; limit?: string | null; classId?: string | null }
+      >({
+        query: ({ page, limit = ITEMS_PER_PAGE, classId }) => ({
           url: "/teachers",
-          params: { page },
+          params: removeEmptyProperties({ page, limit, classId }),
         }),
       }),
     };
