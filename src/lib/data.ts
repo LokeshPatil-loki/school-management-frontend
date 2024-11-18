@@ -1,6 +1,6 @@
 // TEMPORARY DATA
 
-import { UserRole } from "./types/UserRole";
+import { UserRole } from "./types/Enums";
 
 export let role = UserRole.admin;
 
