@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { teachersApiSlice } from "./api/teachersApiSlice";
 import { studentsApiSlice } from "./api/studentsApiSlice";
 import { parentsApiSlice } from "./api/parentsApiSlice";
+import { subjectsApiSlice } from "./api/subjectsApiSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -9,12 +10,14 @@ export const makeStore = () => {
       [teachersApiSlice.reducerPath]: teachersApiSlice.reducer,
       [studentsApiSlice.reducerPath]: studentsApiSlice.reducer,
       [parentsApiSlice.reducerPath]: parentsApiSlice.reducer,
+      [subjectsApiSlice.reducerPath]: subjectsApiSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => {
       return getDefaultMiddleware()
         .concat(teachersApiSlice.middleware)
         .concat(studentsApiSlice.middleware)
-        .concat(parentsApiSlice.middleware);
+        .concat(parentsApiSlice.middleware)
+        .concat(subjectsApiSlice.middleware);
     },
   });
 };
