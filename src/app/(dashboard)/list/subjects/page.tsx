@@ -1,3 +1,4 @@
+"use client";
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
@@ -8,6 +9,8 @@ import { UserRole } from "@/lib/types/Enums";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useGetSubjectsQuery } from "@/lib/redux/api/subjectsApiSlice";
+import { useSearchParams } from "next/navigation";
 
 const columns = [
   {
@@ -25,35 +28,43 @@ const columns = [
   },
 ];
 
+const renderRow = (item: Subject) => {
+  return (
+    <tr
+      key={item.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight"
+    >
+      <td className="flex flex-row items-center gap-4 p-4">
+        <div className="flex flex-col">
+          <h3 className="font-semibold">{item.name}</h3>
+          {/* <p className="text-xs text-gray-500">{item?.teachers.join(", ")}</p> */}
+        </div>
+      </td>
+      <td className="hidden md:table-cell text-sm">
+        {item.teachers.map((item) => item.name)?.join(", ")}
+      </td>
+      <td className="">
+        <div className="flex items-center gap-2">
+          {role === UserRole.admin && (
+            <>
+              <FormModal type="update" table="subject" data={item} />
+              <FormModal type="delete" table="subject" id={item.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+};
+
 const SubjectListPage = () => {
-  const renderRow = (item: Subject) => {
-    return (
-      <tr
-        key={item.id}
-        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight"
-      >
-        <td className="flex flex-row items-center gap-4 p-4">
-          <div className="flex flex-col">
-            <h3 className="font-semibold">{item.name}</h3>
-            {/* <p className="text-xs text-gray-500">{item?.teachers.join(", ")}</p> */}
-          </div>
-        </td>
-        <td className="hidden md:table-cell text-sm">
-          {item.teachers?.join(", ")}
-        </td>
-        <td className="">
-          <div className="flex items-center gap-2">
-            {role === UserRole.admin && (
-              <>
-                <FormModal type="update" table="subject" data={item} />
-                <FormModal type="delete" table="subject" id={item.id} />
-              </>
-            )}
-          </div>
-        </td>
-      </tr>
-    );
-  };
+  const searchParams = useSearchParams();
+  const { isLoading, isError, data } = useGetSubjectsQuery({
+    page: searchParams.get("page") || "1",
+    limit: searchParams.get("limit"),
+    search: searchParams.get("search"),
+    teacherId: searchParams.get("teacherId"),
+  });
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
       {/* TOP */}
@@ -75,9 +86,15 @@ const SubjectListPage = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={subjectsData} />
-      {/* PAGINATION */}
-      <Pagination />
+      {!isLoading && !isError && (
+        <>
+          <Table columns={columns} renderRow={renderRow} data={data.data} />
+          <Pagination
+            currentPage={data?.meta?.currentPage}
+            totalPages={data?.meta?.totalPages}
+          />
+        </>
+      )}
     </div>
   );
 };
