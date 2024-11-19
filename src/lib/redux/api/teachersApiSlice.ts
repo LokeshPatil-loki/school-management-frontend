@@ -1,6 +1,13 @@
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { PaginationQueryParams } from "@/lib/types/PaginationQueryParams";
 import { removeEmptyProperties } from "@/lib/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+interface GetTeachrsQueryParamsType extends PaginationQueryParams {
+  teacherId?: string | null;
+  search?: string | null;
+  classId?: string | null;
+}
 
 export const teachersApiSlice = createApi({
   reducerPath: "teachers",
@@ -9,18 +16,10 @@ export const teachersApiSlice = createApi({
   }),
   endpoints: (builder) => {
     return {
-      getTeachers: builder.query<
-        any,
-        {
-          page: string;
-          limit?: string | null;
-          classId?: string | null;
-          search?: string | null;
-        }
-      >({
-        query: ({ page, limit = ITEMS_PER_PAGE, classId, search }) => ({
+      getTeachers: builder.query<any, GetTeachrsQueryParamsType>({
+        query: (query) => ({
           url: "/",
-          params: removeEmptyProperties({ page, limit, classId, search }),
+          params: removeEmptyProperties(query),
         }),
       }),
     };

@@ -1,6 +1,11 @@
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { PaginationQueryParams } from "@/lib/types/PaginationQueryParams";
 import { removeEmptyProperties } from "@/lib/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+interface GetParentsQueryParamsType extends PaginationQueryParams {
+  search?: string | null;
+}
 
 export const parentsApiSlice = createApi({
   reducerPath: "parents",
@@ -9,17 +14,10 @@ export const parentsApiSlice = createApi({
   }),
   endpoints: (builder) => {
     return {
-      getParents: builder.query<
-        any,
-        {
-          page: string;
-          limit?: string | null;
-          search?: string | null;
-        }
-      >({
-        query: ({ page, limit = ITEMS_PER_PAGE, search }) => ({
+      getParents: builder.query<any, GetParentsQueryParamsType>({
+        query: (query) => ({
           url: "/",
-          params: removeEmptyProperties({ page, limit, search }),
+          params: removeEmptyProperties(query),
         }),
       }),
     };
