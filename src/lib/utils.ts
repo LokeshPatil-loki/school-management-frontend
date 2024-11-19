@@ -1,8 +1,9 @@
 export function removeEmptyProperties(object: { [key: string]: any }) {
-  for (let key in object) {
-    if (object[key] === undefined || object[key] === null) {
-      delete object[key];
+  const newObject = { ...object };
+  for (let key in newObject) {
+    if (newObject[key] === undefined || newObject[key] === null) {
+      delete newObject[key];
     }
   }
-  return object;
+  return newObject;
 }
