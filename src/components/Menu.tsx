@@ -1,5 +1,5 @@
 import { role } from "@/lib/data";
-import { UserRole } from "@/lib/types/Enums";
+import { UserRole } from "@/lib/types/models/Enums";
 import Image from "next/image";
 import Link from "next/link";
 

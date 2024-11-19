@@ -9,12 +9,12 @@ import {
   role,
   studentsData,
 } from "@/lib/data";
-import { Classes } from "@/lib/types/Classes";
-import { Lesson } from "@/lib/types/Lesson";
-import { Parent } from "@/lib/types/Parent";
-import { Student } from "@/lib/types/Student";
-import { Teacher } from "@/lib/types/Teacher";
-import { UserRole } from "@/lib/types/Enums";
+import { Classes } from "@/lib/types/models/Classes";
+import { Lesson } from "@/lib/types/models/Lesson";
+import { Parent } from "@/lib/types/models/Parent";
+import { Student } from "@/lib/types/models/Student";
+import { Teacher } from "@/lib/types/models/Teacher";
+import { UserRole } from "@/lib/types/models/Enums";
 import Image from "next/image";
 import Link from "next/link";
 import { it } from "node:test";

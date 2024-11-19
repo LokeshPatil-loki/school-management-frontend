@@ -1,4 +1,4 @@
-import { UserRole } from "@/lib/types/Enums";
+import { UserRole } from "@/lib/types/models/Enums";
 import Image from "next/image";
 import React from "react";
 
