@@ -83,6 +83,7 @@ const renderRow = (item: Student) => {
     </tr>
   );
 };
+
 const StudentsListPage = () => {
   const searchParams = useSearchParams();
   const { isLoading, data } = useGetStudentsQuery({
