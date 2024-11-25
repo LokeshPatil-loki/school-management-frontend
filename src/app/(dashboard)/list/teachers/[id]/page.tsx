@@ -8,7 +8,7 @@ import Link from "next/link";
 import React from "react";
 
 const shortcutsData: Shortcut[] = [
-  { title: "Classes", href: "" },
+  { title: "Classes", href: `/list/classes?supervisor=${"teacher13"}` },
   { title: "Students", href: `/list/students?teacherId=${"teacher2"}` },
   { title: "Lessons", href: "" },
   { title: "Exams", href: "" },
