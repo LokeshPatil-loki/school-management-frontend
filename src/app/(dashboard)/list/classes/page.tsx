@@ -77,7 +77,7 @@ const ClassesListPage = () => {
     page: searchParams.get("page") || "1",
     limit: searchParams.get("limit") || undefined,
     search: searchParams.get("search"),
-    supervisor: searchParams.get("supervisorId"),
+    supervisor: searchParams.get("supervisor"),
   });
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
