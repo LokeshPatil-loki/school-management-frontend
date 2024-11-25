@@ -1,9 +1,10 @@
+"use client";
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { classesData, parentsData, role, studentsData } from "@/lib/data";
-import { Classes } from "@/lib/types/models/Classes";
+// import { Classes } from "@/lib/types/models/Classes";
 import { Parent } from "@/lib/types/models/Parent";
 import { Student } from "@/lib/types/models/Student";
 import { Teacher } from "@/lib/types/models/Teacher";
@@ -12,6 +13,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { it } from "node:test";
 import React from "react";
+import { useGetClassesQuery } from "@/lib/redux/api/classesApiSlices";
+import { useSearchParams } from "next/navigation";
+import { Class } from "@/lib/types/models";
 
 const columns = [
   {
@@ -38,35 +42,41 @@ const columns = [
     accessor: "action",
   },
 ];
-
+const renderRow = (item: Class) => {
+  return (
+    <tr
+      key={item.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight"
+    >
+      <td className="flex flex-row items-center gap-4 p-4">
+        <div className="flex flex-col">
+          <h3 className="font-semibold">{item.name}</h3>
+        </div>
+      </td>
+      <td className="hidden md:table-cell text-sm">{item.capacity}</td>
+      <td className="hidden md:table-cell text-sm">{item.grade?.level}</td>
+      <td className="hidden md:table-cell text-sm">{item.supervisor?.name}</td>
+      <td className="">
+        <div className="flex items-center gap-2">
+          {role === UserRole.admin && (
+            <>
+              <FormModal type="update" table="class" data={item} />
+              <FormModal type="delete" table="class" id={item.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+};
 const ClassesListPage = () => {
-  const renderRow = (item: Classes) => {
-    return (
-      <tr
-        key={item.id}
-        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight"
-      >
-        <td className="flex flex-row items-center gap-4 p-4">
-          <div className="flex flex-col">
-            <h3 className="font-semibold">{item.name}</h3>
-          </div>
-        </td>
-        <td className="hidden md:table-cell text-sm">{item.capacity}</td>
-        <td className="hidden md:table-cell text-sm">{item.grade}</td>
-        <td className="hidden md:table-cell text-sm">{item.supervisor}</td>
-        <td className="">
-          <div className="flex items-center gap-2">
-            {role === UserRole.admin && (
-              <>
-                <FormModal type="update" table="class" data={item} />
-                <FormModal type="delete" table="class" id={item.id} />
-              </>
-            )}
-          </div>
-        </td>
-      </tr>
-    );
-  };
+  const searchParams = useSearchParams();
+  const { isLoading, data } = useGetClassesQuery({
+    page: searchParams.get("page") || "1",
+    limit: searchParams.get("limit") || undefined,
+    search: searchParams.get("search"),
+    supervisorId: searchParams.get("supervisorId"),
+  });
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
       {/* TOP */}
@@ -88,9 +98,15 @@ const ClassesListPage = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={classesData} />
-      {/* PAGINATION */}
-      <Pagination />
+      {!isLoading && (
+        <>
+          <Table columns={columns} renderRow={renderRow} data={data.data} />
+          <Pagination
+            currentPage={data?.meta?.currentPage}
+            totalPages={data?.meta?.totalPages}
+          />
+        </>
+      )}
     </div>
   );
 };
