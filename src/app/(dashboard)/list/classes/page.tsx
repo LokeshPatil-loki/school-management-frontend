@@ -55,7 +55,9 @@ const renderRow = (item: Class) => {
       </td>
       <td className="hidden md:table-cell text-sm">{item.capacity}</td>
       <td className="hidden md:table-cell text-sm">{item.grade?.level}</td>
-      <td className="hidden md:table-cell text-sm">{item.supervisor?.name}</td>
+      <td className="hidden md:table-cell text-sm">
+        {item.supervisor?.name + " " + item.supervisor?.surname}
+      </td>
       <td className="">
         <div className="flex items-center gap-2">
           {role === UserRole.admin && (
@@ -75,7 +77,7 @@ const ClassesListPage = () => {
     page: searchParams.get("page") || "1",
     limit: searchParams.get("limit") || undefined,
     search: searchParams.get("search"),
-    supervisorId: searchParams.get("supervisorId"),
+    supervisor: searchParams.get("supervisorId"),
   });
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
