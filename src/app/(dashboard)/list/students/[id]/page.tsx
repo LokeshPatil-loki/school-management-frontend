@@ -17,7 +17,7 @@ const shortcutsData: Shortcut[] = [
   },
   {
     title: "Results",
-    href: `/list/results/?classId=${2}`,
+    href: `/list/results/?studentId=student${2}`,
   },
   {
     title: "Assignments",
