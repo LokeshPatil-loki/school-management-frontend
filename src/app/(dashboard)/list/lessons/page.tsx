@@ -76,6 +76,7 @@ const LessonsListPage = () => {
     limit: searchParams.get("limit") || undefined,
     teacherId: searchParams.get("teacherId"),
     search: searchParams.get("search"),
+    classId: searchParams.get("classId"),
   });
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">

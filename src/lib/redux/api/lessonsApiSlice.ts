@@ -6,6 +6,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 interface GetLessonsQueryParamsType extends PaginationQueryParams {
   teacherId?: string | null;
   search?: string | null;
+  classId?: string | null;
 }
 
 export const lessonsApiSlice = createApi({

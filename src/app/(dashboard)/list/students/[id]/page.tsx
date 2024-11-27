@@ -9,7 +9,7 @@ import React from "react";
 const shortcutsData: Shortcut[] = [
   {
     title: "Lessons",
-    href: "/",
+    href: `/list/lessons/?classId=${2}`,
   },
   {
     title: "Teachers",
