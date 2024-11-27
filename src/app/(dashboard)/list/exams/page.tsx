@@ -1,3 +1,4 @@
+"use client";
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
@@ -10,7 +11,6 @@ import {
   role,
   studentsData,
 } from "@/lib/data";
-import { Classes } from "@/lib/types/models/Classes";
 import { Exam } from "@/lib/types/models/Exam";
 import { Lesson } from "@/lib/types/models/Lesson";
 import { Parent } from "@/lib/types/models/Parent";
@@ -21,6 +21,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { it } from "node:test";
 import React from "react";
+import { useGetExamsQuery } from "@/lib/redux/api/examsApiSlices";
+import { useSearchParams } from "next/navigation";
 
 const columns = [
   {
@@ -46,35 +48,49 @@ const columns = [
     accessor: "action",
   },
 ];
-const ExamsListPage = () => {
-  const renderRow = (item: Exam) => {
-    return (
-      <tr
-        key={item.id}
-        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight"
-      >
-        <td className="flex flex-row items-center gap-4 p-4">
-          <div className="flex flex-col">
-            <h3 className="font-semibold">{item.subject}</h3>
-          </div>
-        </td>
-        <td className="table-cell text-sm">{item.class}</td>
-        <td className="hidden md:table-cell text-sm">{item.teacher}</td>
-        <td className="hidden md:table-cell text-sm">{item.date}</td>
+const renderRow = (item: Exam) => {
+  return (
+    <tr
+      key={item.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight"
+    >
+      <td className="flex flex-row items-center gap-4 p-4">
+        <div className="flex flex-col">
+          <h3 className="font-semibold">{item.lesson.subject.name}</h3>
+        </div>
+      </td>
+      <td className="table-cell text-sm">{item.lesson.class.name}</td>
+      <td className="hidden md:table-cell text-sm">
+        {item.lesson.teacher.name}
+      </td>
+      <td className="hidden md:table-cell text-sm">
+        {new Intl.DateTimeFormat().format(
+          new Date(item.startTime.toString()).getFullYear()
+        )}
+      </td>
 
-        <td className="">
-          <div className="flex items-center gap-2">
-            {role === UserRole.admin && (
-              <>
-                <FormModal type="update" table="exam" data={item} />
-                <FormModal type="delete" table="exam" id={item.id} />
-              </>
-            )}
-          </div>
-        </td>
-      </tr>
-    );
-  };
+      <td className="">
+        <div className="flex items-center gap-2">
+          {role === UserRole.admin && (
+            <>
+              <FormModal type="update" table="exam" data={item} />
+              <FormModal type="delete" table="exam" id={item.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+};
+const ExamsListPage = () => {
+  const searchParams = useSearchParams();
+  const { data, isLoading, isFetching } = useGetExamsQuery({
+    classId: searchParams.get("classId"),
+    limit: searchParams.get("limit"),
+    page: searchParams.get("page"),
+    search: searchParams.get("search"),
+    teacherId: searchParams.get("teacherId"),
+  });
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
       {/* TOP */}
@@ -96,9 +112,15 @@ const ExamsListPage = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={examsData} />
-      {/* PAGINATION */}
-      <Pagination />
+      {!isLoading && (
+        <>
+          <Table columns={columns} renderRow={renderRow} data={data.data} />
+          <Pagination
+            currentPage={data?.meta?.currentPage}
+            totalPages={data?.meta?.totalPages}
+          />
+        </>
+      )}
     </div>
   );
 };

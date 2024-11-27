@@ -17,15 +17,15 @@ const shortcutsData: Shortcut[] = [
   },
   {
     title: "Results",
-    href: "/",
+    href: `/list/results/?classId=${2}`,
   },
   {
     title: "Assignments",
-    href: "/",
+    href: `/list/assignments/?classId=${2}`,
   },
   {
     title: "Exams",
-    href: "/",
+    href: `/list/exams/?classId=${2}`,
   },
 ];
 
