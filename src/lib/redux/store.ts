@@ -6,6 +6,7 @@ import { subjectsApiSlice } from "./api/subjectsApiSlice";
 import { classesApiSlice } from "./api/classesApiSlices";
 import { lessonsApiSlice } from "./api/lessonsApiSlice";
 import { examsApiSlice } from "./api/examsApiSlices";
+import { assignmentsApiSlice } from "./api/assignmentsApiSlices";
 
 export const makeStore = () => {
   return configureStore({
@@ -17,6 +18,7 @@ export const makeStore = () => {
       [classesApiSlice.reducerPath]: classesApiSlice.reducer,
       [lessonsApiSlice.reducerPath]: lessonsApiSlice.reducer,
       [examsApiSlice.reducerPath]: examsApiSlice.reducer,
+      [assignmentsApiSlice.reducerPath]: assignmentsApiSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => {
       return getDefaultMiddleware()
@@ -26,6 +28,8 @@ export const makeStore = () => {
         .concat(subjectsApiSlice.middleware)
         .concat(classesApiSlice.middleware)
         .concat(examsApiSlice.middleware)
+        .concat(assignmentsApiSlice.middleware)
+
         .concat(lessonsApiSlice.middleware);
     },
   });
