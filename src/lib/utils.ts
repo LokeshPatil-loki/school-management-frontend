@@ -7,3 +7,21 @@ export function removeEmptyProperties(object: { [key: string]: any }) {
   }
   return newObject;
 }
+
+export function formatDate(value: string | Date) {
+  if (value instanceof Date) {
+    return new Intl.DateTimeFormat().format(value);
+  }
+  return new Intl.DateTimeFormat().format(new Date(value));
+}
+
+export function formatTime(value: string | Date) {
+  if (!(value instanceof Date)) {
+    value = new Date(value);
+  }
+  return value.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
