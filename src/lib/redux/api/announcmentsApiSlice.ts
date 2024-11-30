@@ -12,6 +12,7 @@ export const announcementsApiSlice = createApi({
   reducerPath: "announcements",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:4000/api/announcements",
+    credentials: "include",
   }),
   endpoints: (builder) => {
     return {

@@ -11,6 +11,7 @@ export const parentsApiSlice = createApi({
   reducerPath: "parents",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:4000/api/parents",
+    credentials: "include",
   }),
   endpoints: (builder) => {
     return {

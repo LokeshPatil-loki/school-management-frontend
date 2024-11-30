@@ -13,6 +13,7 @@ export const lessonsApiSlice = createApi({
   reducerPath: "lessons",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:4000/api/lessons",
+    credentials: "include",
   }),
   endpoints: (builder) => {
     return {

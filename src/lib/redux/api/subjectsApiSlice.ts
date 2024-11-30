@@ -12,6 +12,7 @@ export const subjectsApiSlice = createApi({
   reducerPath: "subjects",
   baseQuery: fetchBaseQuery({
     baseUrl: `${ENV_CONFIG.BACKEND_URL}/subjects`,
+    credentials: "include",
   }),
   endpoints: (builder) => {
     return {

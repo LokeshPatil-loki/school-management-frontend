@@ -12,6 +12,7 @@ export const resultsApiSlice = createApi({
   reducerPath: "results",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:4000/api/results",
+    credentials: "include",
   }),
   endpoints: (builder) => {
     return {
