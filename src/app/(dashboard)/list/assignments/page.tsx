@@ -73,7 +73,7 @@ const AssignmentsListPage = () => {
       accessor: "dueDate",
       className: "hidden md:table-cell",
     },
-    ...(role === "admin"
+    ...(role === "admin" || role === "teacher"
       ? [
           {
             header: "Actions",
