@@ -3,45 +3,17 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import {
-  classesData,
-  lessonsData,
-  parentsData,
-  role,
-  studentsData,
-} from "@/lib/data";
+
 import { Lesson } from "@/lib/types/models/Lesson";
-import { Parent } from "@/lib/types/models/Parent";
-import { Student } from "@/lib/types/models/Student";
-import { Teacher } from "@/lib/types/models/Teacher";
 import { UserRole } from "@/lib/types/models/Enums";
 import Image from "next/image";
-import Link from "next/link";
-import { it } from "node:test";
 import React from "react";
 import { useGetLessonsQuery } from "@/lib/redux/api/lessonsApiSlice";
 import { useSearchParams } from "next/navigation";
+import { getRole } from "@/lib/utils";
 
-const columns = [
-  {
-    header: "Subject Name",
-    accessor: "name",
-  },
-  {
-    header: "Class",
-    accessor: "class",
-  },
-  {
-    header: "Teacher",
-    accessor: "teacher",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
-];
 const renderRow = (item: Lesson) => {
+  const role = getRole();
   return (
     <tr
       key={item.id}
@@ -70,6 +42,7 @@ const renderRow = (item: Lesson) => {
   );
 };
 const LessonsListPage = () => {
+  const role = getRole();
   const searchParams = useSearchParams();
   const { isError, isLoading, data } = useGetLessonsQuery({
     page: searchParams.get("page") || "1",
@@ -78,6 +51,29 @@ const LessonsListPage = () => {
     search: searchParams.get("search"),
     classId: searchParams.get("classId"),
   });
+  const columns = [
+    {
+      header: "Subject Name",
+      accessor: "name",
+    },
+    {
+      header: "Class",
+      accessor: "class",
+    },
+    {
+      header: "Teacher",
+      accessor: "teacher",
+      className: "hidden md:table-cell",
+    },
+    ...(role === UserRole.admin
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
       {/* TOP */}
