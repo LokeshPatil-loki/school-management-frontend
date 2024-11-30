@@ -3,46 +3,16 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { eventsData, role } from "@/lib/data";
 import { useGetEventsQuery } from "@/lib/redux/api/eventsApiSlice";
 import { Event } from "@/lib/types/models";
 import { UserRole } from "@/lib/types/models/Enums";
-import { formatDate, formatTime } from "@/lib/utils";
+import { formatDate, formatTime, getRole } from "@/lib/utils";
 import Image from "next/image";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React from "react";
 
-const columns = [
-  {
-    header: "Title",
-    accessor: "title",
-  },
-  {
-    header: "Class",
-    accessor: "class",
-  },
-  {
-    header: "Date",
-    accessor: "date",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Start Time",
-    accessor: "startTime",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "End Time",
-    accessor: "endTime",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
-];
 const renderRow = (item: Event) => {
+  const role = getRole();
   return (
     <tr
       key={item.id}
@@ -53,7 +23,7 @@ const renderRow = (item: Event) => {
           <h3 className="font-semibold">{item.title}</h3>
         </div>
       </td>
-      <td className="table-cell text-sm">{item.class?.name}</td>
+      <td className="table-cell text-sm">{item.class?.name || "-"}</td>
       <td className="hidden md:table-cell text-sm">
         {formatDate(item.startTime)}
       </td>
@@ -78,6 +48,8 @@ const renderRow = (item: Event) => {
   );
 };
 const EventsListPage = () => {
+  const role = getRole();
+
   const searchParams = useSearchParams();
   const { isLoading, data } = useGetEventsQuery({
     page: searchParams.get("page") || "1",
@@ -85,6 +57,40 @@ const EventsListPage = () => {
     search: searchParams.get("search"),
     classId: searchParams.get("classId"),
   });
+
+  const columns = [
+    {
+      header: "Title",
+      accessor: "title",
+    },
+    {
+      header: "Class",
+      accessor: "class",
+    },
+    {
+      header: "Date",
+      accessor: "date",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Start Time",
+      accessor: "startTime",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "End Time",
+      accessor: "endTime",
+      className: "hidden md:table-cell",
+    },
+    ...(role === "admin"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
       {/* TOP */}
