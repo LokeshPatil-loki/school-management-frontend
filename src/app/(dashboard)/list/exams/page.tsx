@@ -3,52 +3,16 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import {
-  classesData,
-  examsData,
-  lessonsData,
-  parentsData,
-  role,
-  studentsData,
-} from "@/lib/data";
 import { Exam } from "@/lib/types/models/Exam";
-import { Lesson } from "@/lib/types/models/Lesson";
-import { Parent } from "@/lib/types/models/Parent";
-import { Student } from "@/lib/types/models/Student";
-import { Teacher } from "@/lib/types/models/Teacher";
 import { UserRole } from "@/lib/types/models/Enums";
 import Image from "next/image";
-import Link from "next/link";
-import { it } from "node:test";
 import React from "react";
 import { useGetExamsQuery } from "@/lib/redux/api/examsApiSlices";
 import { useSearchParams } from "next/navigation";
+import { getRole } from "@/lib/utils";
 
-const columns = [
-  {
-    header: "Subject Name",
-    accessor: "name",
-  },
-  {
-    header: "Class",
-    accessor: "class",
-  },
-  {
-    header: "Teacher",
-    accessor: "teacher",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Date",
-    accessor: "date",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
-];
 const renderRow = (item: Exam) => {
+  const role = getRole();
   return (
     <tr
       key={item.id}
@@ -83,6 +47,7 @@ const renderRow = (item: Exam) => {
   );
 };
 const ExamsListPage = () => {
+  const role = getRole();
   const searchParams = useSearchParams();
   const { data, isLoading, isFetching } = useGetExamsQuery({
     classId: searchParams.get("classId"),
@@ -91,6 +56,34 @@ const ExamsListPage = () => {
     search: searchParams.get("search"),
     teacherId: searchParams.get("teacherId"),
   });
+  const columns = [
+    {
+      header: "Subject Name",
+      accessor: "name",
+    },
+    {
+      header: "Class",
+      accessor: "class",
+    },
+    {
+      header: "Teacher",
+      accessor: "teacher",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Date",
+      accessor: "date",
+      className: "hidden md:table-cell",
+    },
+    ...(role === UserRole.admin || role === UserRole.teacher
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
       {/* TOP */}
@@ -105,9 +98,10 @@ const ExamsListPage = () => {
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
-            {role === UserRole.admin && (
-              <FormModal type="create" table="exam" />
-            )}
+            {role === UserRole.admin ||
+              (role === UserRole.teacher && (
+                <FormModal type="create" table="exam" />
+              ))}
           </div>
         </div>
       </div>
