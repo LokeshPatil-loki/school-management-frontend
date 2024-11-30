@@ -57,7 +57,7 @@ const AnnouncementsListPage = () => {
             <h3 className="font-semibold">{item.title}</h3>
           </div>
         </td>
-        <td className="table-cell text-sm">{item.class?.name}</td>
+        <td className="table-cell text-sm">{item.class?.name || "-"}</td>
         <td className="hidden md:table-cell text-sm">
           {formatDate(item.date)}
         </td>
