@@ -3,19 +3,13 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { classesData, parentsData, role, studentsData } from "@/lib/data";
-// import { Classes } from "@/lib/types/models/Classes";
-import { Parent } from "@/lib/types/models/Parent";
-import { Student } from "@/lib/types/models/Student";
-import { Teacher } from "@/lib/types/models/Teacher";
 import { UserRole } from "@/lib/types/models/Enums";
 import Image from "next/image";
-import Link from "next/link";
-import { it } from "node:test";
 import React from "react";
 import { useGetClassesQuery } from "@/lib/redux/api/classesApiSlices";
 import { useSearchParams } from "next/navigation";
 import { Class } from "@/lib/types/models";
+import { getRole } from "@/lib/utils";
 
 const columns = [
   {
@@ -43,6 +37,7 @@ const columns = [
   },
 ];
 const renderRow = (item: Class) => {
+  const role = getRole();
   return (
     <tr
       key={item.id}
@@ -72,6 +67,8 @@ const renderRow = (item: Class) => {
   );
 };
 const ClassesListPage = () => {
+  const role = getRole();
+
   const searchParams = useSearchParams();
   const { isLoading, data } = useGetClassesQuery({
     page: searchParams.get("page") || "1",
