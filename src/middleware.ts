@@ -1,6 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { routeAccessMap } from "./lib/settings";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 const matchers = Object.keys(routeAccessMap).map((route) => ({
   matcher: createRouteMatcher([route]),
@@ -17,11 +18,6 @@ const isProtectedRoute = createRouteMatcher([
 // console.log(matchers);
 
 export default clerkMiddleware(async (auth, req, event) => {
-  // if (isProtectedRoute(req)) {
-  //   await auth.protect((has) => {
-  //     return has({});
-  //   });
-  // }
   const { sessionClaims } = await auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
   for (const { matcher, allowedRoles } of matchers) {
@@ -29,6 +25,13 @@ export default clerkMiddleware(async (auth, req, event) => {
       return NextResponse.redirect(new URL(`/${role}`, req.url));
     }
   }
+  fetch("http://localhost:4000/api/teachers", {
+    headers: {
+      Cookie: cookies().toString(),
+    },
+  }).then(async (res) => {
+    console.log(await res.json());
+  });
 });
 
 export const config = {
