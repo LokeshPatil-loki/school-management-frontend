@@ -1,3 +1,5 @@
+import { useUser } from "@clerk/nextjs";
+
 export function removeEmptyProperties(object: { [key: string]: any }) {
   const newObject = { ...object };
   for (let key in newObject) {
@@ -25,3 +27,8 @@ export function formatTime(value: string | Date) {
     hour12: true,
   });
 }
+
+export const getRole = () => {
+  const role = useUser().user?.publicMetadata?.role as string;
+  return role;
+};
