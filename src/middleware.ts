@@ -25,13 +25,6 @@ export default clerkMiddleware(async (auth, req, event) => {
       return NextResponse.redirect(new URL(`/${role}`, req.url));
     }
   }
-  fetch("http://localhost:4000/api/teachers", {
-    headers: {
-      Cookie: cookies().toString(),
-    },
-  }).then(async (res) => {
-    console.log(await res.json());
-  });
 });
 
 export const config = {
