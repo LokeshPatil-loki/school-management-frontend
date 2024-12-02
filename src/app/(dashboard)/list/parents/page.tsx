@@ -10,6 +10,7 @@ import Image from "next/image";
 import React from "react";
 import { useSearchParams } from "next/navigation";
 import { useGetParentsQuery } from "@/lib/redux/api/parentsApiSlice";
+import { getRole } from "@/lib/utils";
 
 const columns = [
   {
@@ -38,6 +39,7 @@ const columns = [
 ];
 
 const renderRow = (item: Parent) => {
+  const role = getRole();
   return (
     <tr
       key={item.id}

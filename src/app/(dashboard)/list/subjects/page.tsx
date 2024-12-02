@@ -11,24 +11,10 @@ import Link from "next/link";
 import React from "react";
 import { useGetSubjectsQuery } from "@/lib/redux/api/subjectsApiSlice";
 import { useSearchParams } from "next/navigation";
-
-const columns = [
-  {
-    header: "Subject Name",
-    accessor: "name",
-  },
-  {
-    header: "Teachers",
-    accessor: "teachers",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
-];
+import { getRole } from "@/lib/utils";
 
 const renderRow = (item: Subject) => {
+  const role = getRole();
   return (
     <tr
       key={item.id}
@@ -58,6 +44,8 @@ const renderRow = (item: Subject) => {
 };
 
 const SubjectListPage = () => {
+  const role = getRole();
+
   const searchParams = useSearchParams();
   const { isLoading, isError, data } = useGetSubjectsQuery({
     page: searchParams.get("page") || "1",
@@ -65,6 +53,26 @@ const SubjectListPage = () => {
     search: searchParams.get("search"),
     teacherId: searchParams.get("teacherId"),
   });
+
+  const columns = [
+    {
+      header: "Subject Name",
+      accessor: "name",
+    },
+    {
+      header: "Teachers",
+      accessor: "teachers",
+      className: "hidden md:table-cell",
+    },
+    ...(role === UserRole.admin
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
       {/* TOP */}

@@ -3,49 +3,17 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, studentsData } from "@/lib/data";
 import { Student } from "@/lib/types/models/Student";
-import { Teacher } from "@/lib/types/models/Teacher";
 import { UserRole } from "@/lib/types/models/Enums";
 import Image from "next/image";
 import Link from "next/link";
-import { it } from "node:test";
 import React from "react";
 import { useSearchParams } from "next/navigation";
 import { useGetStudentsQuery } from "@/lib/redux/api/studentsApiSlice";
-
-const columns = [
-  {
-    header: "Info",
-    accessor: "info",
-  },
-  {
-    header: "Student ID",
-    accessor: "studentId",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Grade",
-    accessor: "grade",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Phone",
-    accessor: "phone",
-    className: "hidden lg:table-cell",
-  },
-  {
-    header: "Address",
-    accessor: "address",
-    className: "hidden lg:table-cell",
-  },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
-];
+import { getRole } from "@/lib/utils";
 
 const renderRow = (item: Student) => {
+  const role = getRole();
   return (
     <tr
       key={item.id}
@@ -85,6 +53,8 @@ const renderRow = (item: Student) => {
 };
 
 const StudentsListPage = () => {
+  const role = getRole();
+
   const searchParams = useSearchParams();
   const { isLoading, data } = useGetStudentsQuery({
     page: searchParams.get("page") || "1",
@@ -92,6 +62,41 @@ const StudentsListPage = () => {
     teacherId: searchParams.get("teacherId"),
     search: searchParams.get("search"),
   });
+
+  const columns = [
+    {
+      header: "Info",
+      accessor: "info",
+    },
+    {
+      header: "Student ID",
+      accessor: "studentId",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Grade",
+      accessor: "grade",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Phone",
+      accessor: "phone",
+      className: "hidden lg:table-cell",
+    },
+    {
+      header: "Address",
+      accessor: "address",
+      className: "hidden lg:table-cell",
+    },
+    ...(role === UserRole.admin
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
       {/* TOP */}

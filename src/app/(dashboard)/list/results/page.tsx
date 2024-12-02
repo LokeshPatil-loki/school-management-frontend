@@ -3,7 +3,6 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { resultsData, role } from "@/lib/data";
 import { Result } from "@/lib/types/models/Result";
 import { UserRole } from "@/lib/types/models/Enums";
 import Image from "next/image";
@@ -11,42 +10,7 @@ import Link from "next/link";
 import React from "react";
 import { useSearchParams } from "next/navigation";
 import { useGetResultsQuery } from "@/lib/redux/api/resultsApiSlices";
-import { title } from "process";
-
-const columns = [
-  {
-    header: "title",
-    accessor: "title",
-  },
-  {
-    header: "Student",
-    accessor: "student",
-  },
-  {
-    header: "Score",
-    accessor: "score",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Teacher",
-    accessor: "teacher",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Class",
-    accessor: "class",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Date",
-    accessor: "date",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
-];
+import { getRole } from "@/lib/utils";
 
 type ResultList = {
   id: string;
@@ -61,6 +25,7 @@ type ResultList = {
 };
 
 const renderRow = (item: ResultList) => {
+  const role = getRole();
   return (
     <tr
       key={item.id}
@@ -90,7 +55,7 @@ const renderRow = (item: ResultList) => {
               <Image src={"/edit.png"} alt="" width={16} height={16} />
             </button>
           </Link>
-          {role === UserRole.admin && (
+          {(role === UserRole.admin || role === UserRole.teacher) && (
             <FormModal type="delete" table="result" id={item.id} />
           )}
         </div>
@@ -99,6 +64,7 @@ const renderRow = (item: ResultList) => {
   );
 };
 const ResultsListPage = () => {
+  const role = getRole();
   const searchParams = useSearchParams();
   const {
     data: dataRes,
@@ -129,6 +95,46 @@ const ResultsListPage = () => {
       startTime: isExam ? assessment.startTime : assessment.startDate,
     };
   });
+
+  const columns = [
+    {
+      header: "title",
+      accessor: "title",
+    },
+    {
+      header: "Student",
+      accessor: "student",
+    },
+    {
+      header: "Score",
+      accessor: "score",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Teacher",
+      accessor: "teacher",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Class",
+      accessor: "class",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Date",
+      accessor: "date",
+      className: "hidden md:table-cell",
+    },
+    ...(role === "admin" || role === "teacher"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
+
   return (
     <div className="w-[97%] h-[98%] m-4 mx-auto bg-white p-4">
       {/* TOP */}
