@@ -3,24 +3,14 @@ import { PaginationQueryParams } from "@/lib/types/PaginationQueryParams";
 import { removeEmptyProperties } from "@/lib/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-interface GetParentsQueryParamsType extends PaginationQueryParams {
-  search?: string | null;
-}
-
-export const parentsApiSlice = createApi({
-  reducerPath: "parents",
+export const adminApiSlice = createApi({
+  reducerPath: "admin",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:4000/api/parents",
+    baseUrl: "http://localhost:4000/api/admin",
     credentials: "include",
   }),
   endpoints: (builder) => {
     return {
-      getParents: builder.query<any, GetParentsQueryParamsType>({
-        query: (query) => ({
-          url: "/",
-          params: removeEmptyProperties(query),
-        }),
-      }),
       count: builder.query<any, any>({
         query: (query) => ({
           url: "/count",
@@ -30,4 +20,4 @@ export const parentsApiSlice = createApi({
   },
 });
 
-export const { useGetParentsQuery, useCountQuery } = parentsApiSlice;
+export const { useCountQuery } = adminApiSlice;

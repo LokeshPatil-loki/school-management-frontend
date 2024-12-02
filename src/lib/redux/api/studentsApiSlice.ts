@@ -22,8 +22,13 @@ export const studentsApiSlice = createApi({
           params: removeEmptyProperties(query),
         }),
       }),
+      count: builder.query<any, any>({
+        query: (query) => ({
+          url: "/count",
+        }),
+      }),
     };
   },
 });
 
-export const { useGetStudentsQuery } = studentsApiSlice;
+export const { useGetStudentsQuery, useCountQuery } = studentsApiSlice;

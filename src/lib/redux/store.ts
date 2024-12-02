@@ -10,6 +10,7 @@ import { assignmentsApiSlice } from "./api/assignmentsApiSlices";
 import { resultsApiSlice } from "./api/resultsApiSlices";
 import { eventsApiSlice } from "./api/eventsApiSlice";
 import { announcementsApiSlice } from "./api/announcmentsApiSlice";
+import { adminApiSlice } from "./api/adminApiSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -25,6 +26,7 @@ export const makeStore = () => {
       [resultsApiSlice.reducerPath]: resultsApiSlice.reducer,
       [eventsApiSlice.reducerPath]: eventsApiSlice.reducer,
       [announcementsApiSlice.reducerPath]: announcementsApiSlice.reducer,
+      [adminApiSlice.reducerPath]: adminApiSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => {
       return getDefaultMiddleware()
@@ -38,6 +40,7 @@ export const makeStore = () => {
         .concat(resultsApiSlice.middleware)
         .concat(eventsApiSlice.middleware)
         .concat(announcementsApiSlice.middleware)
+        .concat(adminApiSlice.middleware)
         .concat(lessonsApiSlice.middleware);
     },
   });
