@@ -18,6 +18,8 @@ const style = {
 
 const CountChart = () => {
   const { data: dataRes } = useStudentCountBySexQuery({});
+  const boys = dataRes.male;
+  const girls = dataRes.female;
   const data = [
     {
       name: "Total",
@@ -25,13 +27,13 @@ const CountChart = () => {
       fill: "white",
     },
     {
-      name: "Girls",
-      count: dataRes.female,
+      name: "Boys",
+      count: boys,
       fill: "#FAE27C",
     },
     {
       name: "Girls",
-      count: dataRes.male,
+      count: girls,
       fill: "#C3EBFA",
     },
   ];
@@ -73,13 +75,17 @@ const CountChart = () => {
       <div className="flex flex-row justify-center gap-16">
         <div className="flex flex-col gap-1">
           <div className="w-5 h-5 bg-sky rounded-full "></div>
-          <h3 className="font-bold">{dataRes.female}</h3>
-          <span className="text-xs font-medium text-gray-300">Boys (55%)</span>
+          <h3 className="font-bold">{boys}</h3>
+          <span className="text-xs font-medium text-gray-300">
+            Boys ({boys / (boys + girls)}%)
+          </span>
         </div>
         <div className="flex flex-col gap-1">
           <div className="w-5 h-5 bg-yellow rounded-full "></div>
-          <h3 className="font-bold">{dataRes.female}</h3>
-          <span className="text-xs font-medium text-gray-300">Girls (45%)</span>
+          <h3 className="font-bold">{girls}</h3>
+          <span className="text-xs font-medium text-gray-300">
+            Girls ({girls / (boys + girls)})
+          </span>
         </div>
       </div>
     </div>
