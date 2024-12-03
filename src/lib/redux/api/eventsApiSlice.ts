@@ -1,4 +1,3 @@
-import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { PaginationQueryParams } from "@/lib/types/PaginationQueryParams";
 import { removeEmptyProperties } from "@/lib/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";

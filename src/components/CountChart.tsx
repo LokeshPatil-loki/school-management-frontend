@@ -1,4 +1,5 @@
 "use client";
+import { useStudentCountBySexQuery } from "@/lib/redux/api/studentsApiSlice";
 import Image from "next/image";
 import React, { PureComponent } from "react";
 import {
@@ -8,24 +9,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  {
-    name: "Total",
-    count: 100,
-    fill: "white",
-  },
-  {
-    name: "Girls",
-    count: 45,
-    fill: "#FAE27C",
-  },
-  {
-    name: "Girls",
-    count: 45,
-    fill: "#C3EBFA",
-  },
-];
-
 const style = {
   top: "50%",
   right: 0,
@@ -34,6 +17,24 @@ const style = {
 };
 
 const CountChart = () => {
+  const { data: dataRes } = useStudentCountBySexQuery({});
+  const data = [
+    {
+      name: "Total",
+      count: 100,
+      fill: "white",
+    },
+    {
+      name: "Girls",
+      count: dataRes.female,
+      fill: "#FAE27C",
+    },
+    {
+      name: "Girls",
+      count: dataRes.male,
+      fill: "#C3EBFA",
+    },
+  ];
   return (
     <div className="bg-white rounded-xl w-full h-full p-4">
       {/* Title */}
@@ -72,12 +73,12 @@ const CountChart = () => {
       <div className="flex flex-row justify-center gap-16">
         <div className="flex flex-col gap-1">
           <div className="w-5 h-5 bg-sky rounded-full "></div>
-          <h3 className="font-bold">1,234</h3>
+          <h3 className="font-bold">{dataRes.female}</h3>
           <span className="text-xs font-medium text-gray-300">Boys (55%)</span>
         </div>
         <div className="flex flex-col gap-1">
           <div className="w-5 h-5 bg-yellow rounded-full "></div>
-          <h3 className="font-bold">1,234</h3>
+          <h3 className="font-bold">{dataRes.female}</h3>
           <span className="text-xs font-medium text-gray-300">Girls (45%)</span>
         </div>
       </div>

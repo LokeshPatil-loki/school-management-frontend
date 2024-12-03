@@ -2,6 +2,7 @@ import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { PaginationQueryParams } from "@/lib/types/PaginationQueryParams";
 import { removeEmptyProperties } from "@/lib/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { url } from "inspector";
 
 interface GetStudentsQueryParamsType extends PaginationQueryParams {
   teacherId?: string | null;
@@ -27,8 +28,14 @@ export const studentsApiSlice = createApi({
           url: "/count",
         }),
       }),
+      studentCountBySex: builder.query({
+        query: () => ({
+          url: "/count-by-sex",
+        }),
+      }),
     };
   },
 });
 
-export const { useGetStudentsQuery, useCountQuery } = studentsApiSlice;
+export const { useGetStudentsQuery, useCountQuery, useStudentCountBySexQuery } =
+  studentsApiSlice;
